@@ -1,0 +1,187 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("stars.gif");
+  background-size: cover;
+  /* background: radial-gradient(
+    ellipse at top,
+    #1a1a3e 0%,
+    #0f0f23 50%,
+    #000000 100%
+  ); */
+  /* url("stars.gif"); */
+  background-size: cover, auto;
+  background-position: center, center;
+  background-attachment: fixed, fixed;
+  color: white;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fallback starfield if stars.gif is not available */
+body::before {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  box-shadow: -150px -200px 0 0.5px white, 200px -100px 0 0.5px white,
+    -250px 150px 0 1px white, 100px 250px 0 0.5px white,
+    -300px -50px 0 1px white, 350px 100px 0 0.5px white,
+    -100px 300px 0 0.5px white, 150px -250px 0 1px white,
+    -400px 100px 0 0.5px white, 300px -200px 0 1px white,
+    50px 150px 0 0.5px white, -200px -300px 0 1px white,
+    400px 50px 0 0.5px white, -150px 250px 0 0.5px white,
+    250px -150px 0 1px white, -350px 200px 0 0.5px white,
+    -50px -150px 0 0.5px white, 450px -50px 0 1px white,
+    -250px -100px 0 0.5px white, 150px 350px 0 0.5px white,
+    -450px -150px 0 1px white, 350px 200px 0 0.5px white,
+    100px -300px 0 0.5px white, -100px 100px 0 0.5px white,
+    200px 200px 0 1px white, -300px 300px 0 0.5px white,
+    -200px 50px 0 0.5px white, 300px 300px 0 1px white,
+    50px -200px 0 0.5px white, -350px -250px 0 0.5px white,
+    400px 250px 0 1px white, -150px -50px 0 0.5px white,
+    250px 100px 0 0.5px white, -50px 250px 0 0.5px white,
+    150px -150px 0 1px white, -400px 150px 0 0.5px white,
+    -100px -250px 0 0.5px white, 350px -100px 0 1px white,
+    100px 50px 0 0.5px white, -250px 250px 0 0.5px white,
+    450px 150px 0 1px white, -300px -200px 0 0.5px white;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: white;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  box-shadow: 180px -180px 0 0.5px rgba(255, 255, 255, 0.8),
+    -220px 140px 0 0.5px rgba(255, 255, 255, 0.8),
+    320px 220px 0 0.5px rgba(255, 255, 255, 0.8),
+    -380px -80px 0 0.5px rgba(255, 255, 255, 0.8),
+    120px 280px 0 0.5px rgba(255, 255, 255, 0.8),
+    -160px -220px 0 0.5px rgba(255, 255, 255, 0.8),
+    420px -120px 0 0.5px rgba(255, 255, 255, 0.8),
+    -280px 180px 0 0.5px rgba(255, 255, 255, 0.8),
+    80px -280px 0 0.5px rgba(255, 255, 255, 0.8),
+    280px 120px 0 0.5px rgba(255, 255, 255, 0.8),
+    -320px -180px 0 0.5px rgba(255, 255, 255, 0.8),
+    380px 80px 0 0.5px rgba(255, 255, 255, 0.8),
+    -120px 320px 0 0.5px rgba(255, 255, 255, 0.8),
+    220px -220px 0 0.5px rgba(255, 255, 255, 0.8),
+    -420px 20px 0 0.5px rgba(255, 255, 255, 0.8),
+    160px 180px 0 0.5px rgba(255, 255, 255, 0.8);
+  animation: twinkle 6s ease-in-out infinite reverse;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.container {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  padding: 40px 40px 50px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+  z-index: 1;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 25px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+.moon-container {
+  margin: 20px 0 30px;
+}
+
+.moon {
+  font-size: 120px;
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.answer {
+  font-size: 4rem;
+  font-weight: bold;
+  margin: 20px 0 30px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.answer.yes {
+  color: #ffd700;
+}
+
+.answer.no {
+  color: #e0e0e0;
+}
+
+.details {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.date {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 30px;
+  font-style: italic;
+}
+
+.phase-info {
+  margin-top: 15px;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.last-full-moon {
+  font-size: 0.95rem;
+  opacity: 0.75;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
