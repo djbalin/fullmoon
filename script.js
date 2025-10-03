@@ -120,7 +120,7 @@ function initMoonTracker() {
     } else {
       document.getElementById(
         "details",
-      ).textContent = `Næste fuldmåne er om cirka ${daysUntil} dage.`;
+      ).textContent = `Næste fuldmåne er om cirka ${daysUntil} dage`;
     }
   }
 

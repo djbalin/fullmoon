@@ -104,12 +104,11 @@ body::after {
   text-align: center;
   max-width: 600px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: rgba(15, 15, 35, 0.8);
   border-radius: 30px;
   padding: 40px 40px 50px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   z-index: 1;
 }
@@ -141,19 +140,26 @@ h1 {
   }
 }
 
+.title {
+  font-size: 2.7rem;
+  margin-bottom: 25px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
 .answer {
-  font-size: 4rem;
+  font-size: 5rem;
   font-weight: bold;
   margin: 20px 0 30px;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .answer.yes {
-  color: #ffd700;
+  color: #bbffb4;
 }
 
 .answer.no {
-  color: #e0e0e0;
+  color: #ffb4b4;
 }
 
 .details {
@@ -171,10 +177,10 @@ h1 {
 }
 
 .phase-info {
-  margin-top: 15px;
-  margin-bottom: 20px;
-  font-size: 1.1rem;
-  opacity: 0.85;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  opacity: 0.5;
   font-weight: 500;
 }
 
