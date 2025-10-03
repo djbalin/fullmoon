@@ -1,0 +1,16 @@
+# Robots.txt for Fuldmåne Tracker
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://erdetfuldmaane.dk/sitemap.xml
+
+# Common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /

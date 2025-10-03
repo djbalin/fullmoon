@@ -3,21 +3,184 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Er det fuldmåne?</title>
+
+    <!-- Primary Meta Tags -->
+    <title>
+      Er det fuldmåne i dag? | Fuldmåne Danmark | Hvornår er der fuldmåne?
+    </title>
+    <meta
+      name="title"
+      content="Er det fuldmåne i dag? | Fuldmåne Danmark | Hvornår er der fuldmåne?"
+    />
+    <meta
+      name="description"
+      content="Er det fuldmåne i nat? Tjek den aktuelle månefase i Danmark. Se hvornår næste og sidste fuldmåne er. Opdateret dagligt med præcis månekalender."
+    />
+    <meta
+      name="keywords"
+      content="fuldmåne, er det fuldmåne, fuldmåne hvornår, hvornår fuldmåne, fuldmåne i dag, fuldmåne i nat, månefase, månekalender, fuldmåne danmark, næste fuldmåne"
+    />
+    <meta name="language" content="Danish" />
+    <meta name="author" content="Fuldmåne Tracker" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://erdetfuldmaane.dk/" />
+    <meta
+      property="og:title"
+      content="Er det fuldmåne i dag? | Fuldmåne Danmark"
+    />
+    <meta
+      property="og:description"
+      content="Tjek om det er fuldmåne i nat. Se aktuel månefase og hvornår næste fuldmåne er i Danmark."
+    />
+    <meta
+      property="og:image"
+      content="https://erdetfuldmaane.dk/og-image.png"
+    />
+    <meta property="og:locale" content="da_DK" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://erdetfuldmaane.dk/" />
+    <meta property="twitter:title" content="Er det fuldmåne i dag?" />
+    <meta
+      property="twitter:description"
+      content="Tjek om det er fuldmåne i nat. Se aktuel månefase og hvornår næste fuldmåne er."
+    />
+    <meta
+      property="twitter:image"
+      content="https://erdetfuldmaane.dk/og-image.png"
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://erdetfuldmaane.dk/" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌕</text></svg>"
+    />
+
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Er det fuldmåne i dag?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Denne side viser om det er fuldmåne i Danmark i dag. Månefasen opdateres automatisk baseret på astronomiske beregninger og viser den aktuelle månefase."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Hvornår er der fuldmåne?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Fuldmåne indtræffer cirka hver 29,5 dag. På denne side kan du se hvornår næste fuldmåne er, samt hvornår den sidste fuldmåne var."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Hvad er månefaserne?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Månefaserne er: Nymåne, Tiltagende månesigel, Første kvarter, Tiltagende måne, Fuldmåne, Aftagende måne, Sidste kvarter, og Aftagende månesigel."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Er det fuldmåne?",
+        "url": "https://erdetfuldmaane.dk/",
+        "description": "Tjek om det er fuldmåne i Danmark. Se aktuel månefase, næste og sidste fuldmåne.",
+        "inLanguage": "da-DK",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://erdetfuldmaane.dk/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
   </head>
   <body>
-    <div class="container">
-      <h1>Er det fuldmåne?</h1>
-      <div class="answer" id="answer">Beregner...</div>
-      <div class="moon-container">
-        <div class="moon" id="moonEmoji">🌕</div>
-      </div>
-      <div class="phase-info" id="phaseInfo"></div>
-      <div class="details" id="details"></div>
-      <div class="last-full-moon" id="lastFullMoon"></div>
-      <div class="date" id="date"></div>
-    </div>
+    <main>
+      <article class="container">
+        <header>
+          <h1>Er det fuldmåne?</h1>
+        </header>
+
+        <section class="moon-info" aria-label="Fuldmåne information">
+          <div class="answer" id="answer" role="status" aria-live="polite">
+            Beregner...
+          </div>
+          <div class="moon-container">
+            <div class="moon" id="moonEmoji" role="img" aria-label="Måne emoji">
+              🌕
+            </div>
+          </div>
+          <div class="phase-info" id="phaseInfo" role="status"></div>
+          <div class="details" id="details"></div>
+          <div class="last-full-moon" id="lastFullMoon"></div>
+          <time class="date" id="date" datetime=""></time>
+        </section>
+      </article>
+
+      <!-- SEO Content (Hidden but crawlable) -->
+      <section class="seo-content" aria-hidden="true">
+        <h2>Fuldmåne i Danmark - Aktuel Månefase</h2>
+        <p>
+          Er det fuldmåne i dag? Find ud af om der er fuldmåne i nat i Danmark.
+          Vores månekalender viser den aktuelle månefase og fortæller dig
+          præcist hvornår næste fuldmåne er.
+        </p>
+
+        <h3>Hvornår er der fuldmåne?</h3>
+        <p>
+          Fuldmåne indtræffer cirka hver 29,5 dag, når månen er på den modsatte
+          side af jorden i forhold til solen. På denne side kan du altid se den
+          aktuelle månefase, hvornår sidste fuldmåne var, og hvornår næste
+          fuldmåne kommer.
+        </p>
+
+        <h3>Månefaser i Danmark</h3>
+        <p>
+          Månefaserne gentager sig i en fast cyklus: Nymåne, Tiltagende
+          månesigel, Første kvarter, Tiltagende måne, Fuldmåne, Aftagende måne,
+          Sidste kvarter, og Aftagende månesigel. Hver fase varer cirka 3-4
+          dage.
+        </p>
+
+        <h3>Månekalender og Fuldmåne Dato</h3>
+        <p>
+          Brug denne månekalender til at holde styr på månefaserne. Du kan se
+          både historiske og fremtidige fuldmåner, så du altid ved hvornår der
+          er fuldmåne i Danmark.
+        </p>
+
+        <h3>Er det fuldmåne i nat?</h3>
+        <p>
+          Tjek toppen af siden for at se om det er fuldmåne i nat. Vi beregner
+          månefasen baseret på astronomiske data og viser svaret øjeblikkeligt.
+          Siden opdateres automatisk hver dag.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Fuldmåne information for Danmark | Opdateret dagligt</p>
+    </footer>
 
     <script src="script.js"></script>
     <script>

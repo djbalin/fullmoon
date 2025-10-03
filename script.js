@@ -165,7 +165,12 @@ function initMoonTracker() {
     timeZone: "Europe/Copenhagen",
   };
   const dateString = denmarkTime.toLocaleDateString("da-DK", options);
-  document.getElementById("date").textContent = dateString;
+  const dateElement = document.getElementById("date");
+  dateElement.textContent = dateString;
+
+  // Add ISO datetime attribute for SEO
+  const isoDate = denmarkTime.toISOString().split("T")[0];
+  dateElement.setAttribute("datetime", isoDate);
 }
 
 // Initialize when DOM is ready
