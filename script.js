@@ -64,6 +64,26 @@ function getNextFullMoon(currentDate, currentPhase) {
   return Math.round(daysUntilFull);
 }
 
+function getNextFullMoonDate(currentDate, currentPhase) {
+  const lunarMonth = 29.53059;
+  let daysUntilFull;
+
+  if (currentPhase < 0.5) {
+    // Moon is waxing, full moon is ahead
+    daysUntilFull = (0.5 - currentPhase) * lunarMonth;
+  } else {
+    // Moon is waning, next full moon is in next cycle
+    daysUntilFull = (1.5 - currentPhase) * lunarMonth;
+  }
+
+  const nextFullMoonDate = new Date(currentDate);
+  nextFullMoonDate.setTime(
+    nextFullMoonDate.getTime() + daysUntilFull * 24 * 60 * 60 * 1000,
+  );
+
+  return nextFullMoonDate;
+}
+
 function getLastFullMoon(currentDate, currentPhase) {
   const lunarMonth = 29.53059;
   let daysSinceFull;
@@ -82,6 +102,53 @@ function getLastFullMoon(currentDate, currentPhase) {
   );
 
   return lastFullMoonDate;
+}
+
+function startCountdown(targetDate) {
+  function updateCountdown() {
+    const now = new Date();
+    const denmarkTime = new Date(
+      now.toLocaleString("en-US", { timeZone: "Europe/Copenhagen" }),
+    );
+
+    const timeRemaining = targetDate - denmarkTime;
+
+    if (timeRemaining <= 0) {
+      // Reload page when countdown ends
+      location.reload();
+      return;
+    }
+
+    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+    );
+    const minutes = Math.floor(
+      (timeRemaining % (1000 * 60 * 60)) / (1000 * 60),
+    );
+    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+    let countdownText = "";
+
+    if (days > 0) {
+      countdownText = `${days}d ${hours}t ${minutes}m ${seconds}s`;
+    } else if (hours > 0) {
+      countdownText = `${hours}t ${minutes}m ${seconds}s`;
+    } else {
+      countdownText = `${minutes}m ${seconds}s`;
+    }
+
+    document.getElementById("details").innerHTML = `
+      <div class="countdown-timer">${countdownText}</div>
+      <div class="countdown-label">til næste fuldmåne</div>
+    `;
+  }
+
+  // Update immediately
+  updateCountdown();
+
+  // Update every second
+  setInterval(updateCountdown, 1000);
 }
 
 // Main execution
@@ -106,22 +173,14 @@ function initMoonTracker() {
   if (isFullMoon) {
     document.getElementById("answer").textContent = "JA! 🎉";
     document.getElementById("answer").className = "answer yes";
-    document.getElementById("details").textContent = "Det er fuldmåne i nat!";
+    document.getElementById("details").innerHTML = "Det er fuldmåne i nat!";
   } else {
     document.getElementById("answer").textContent = "NEJ";
     document.getElementById("answer").className = "answer no";
-    const daysUntil = getNextFullMoon(denmarkTime, phase);
-    if (daysUntil === 0) {
-      document.getElementById("details").textContent =
-        "Næste fuldmåne er i morgen!";
-    } else if (daysUntil === 1) {
-      document.getElementById("details").textContent =
-        "Næste fuldmåne er om 1 dag.";
-    } else {
-      document.getElementById(
-        "details",
-      ).textContent = `Næste fuldmåne er om cirka ${daysUntil} dage`;
-    }
+
+    // Set up countdown timer
+    const nextFullMoonDate = getNextFullMoonDate(denmarkTime, phase);
+    startCountdown(nextFullMoonDate);
   }
 
   document.getElementById("phaseInfo").textContent = phaseName;
