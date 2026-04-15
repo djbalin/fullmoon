@@ -49,20 +49,6 @@ function getPhaseName(phase) {
   return "Nymåne";
 }
 
-function getNextFullMoon(currentDate, currentPhase) {
-  const lunarMonth = 29.53059;
-  let daysUntilFull;
-
-  if (currentPhase < 0.5) {
-    // Moon is waxing, full moon is ahead
-    daysUntilFull = (0.5 - currentPhase) * lunarMonth;
-  } else {
-    // Moon is waning, next full moon is in next cycle
-    daysUntilFull = (1.5 - currentPhase) * lunarMonth;
-  }
-
-  return Math.round(daysUntilFull);
-}
 
 function getNextFullMoonDate(currentDate, currentPhase) {
   const lunarMonth = 29.53059;
@@ -131,11 +117,11 @@ function startCountdown(targetDate) {
     let countdownText = "";
 
     if (days > 0) {
-      countdownText = `${days}d ${hours}t ${minutes}m ${seconds}s`;
+      countdownText = `${days}d ${hours}t ${minutes}m`;
     } else if (hours > 0) {
-      countdownText = `${hours}t ${minutes}m ${seconds}s`;
+      countdownText = `${hours}t ${minutes}m`;
     } else {
-      countdownText = `${minutes}m ${seconds}s`;
+      countdownText = `${minutes}m`;
     }
 
     document.getElementById("details").innerHTML = `
@@ -180,6 +166,15 @@ function initMoonTracker() {
 
     // Set up countdown timer
     const nextFullMoonDate = getNextFullMoonDate(denmarkTime, phase);
+    console.log(nextFullMoonDate);
+    document.getElementById("nextFullMoon").textContent = `Næste fuldmåne: ${nextFullMoonDate.toLocaleDateString("da-DK", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Copenhagen",
+    })}`;
     startCountdown(nextFullMoonDate);
   }
 
