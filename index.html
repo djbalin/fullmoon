@@ -9,20 +9,10 @@
     <meta name="theme-color" content="#05060f" />
 
     <!-- Primary Meta Tags -->
-    <title>
-      Er det fuldmåne? | Fuldmåne Danmark | Hvornår er der fuldmåne?
-    </title>
-    <meta
-      name="title"
-      content="Er det fuldmåne i dag? | Fuldmåne Danmark | Hvornår er der fuldmåne?"
-    />
+    <title>Er det fuldmåne i dag? Hvornår er næste fuldmåne?</title>
     <meta
       name="description"
-      content="Er det fuldmåne i nat? Tjek den aktuelle månefase i Danmark. Se hvornår næste og sidste fuldmåne er. Opdateret dagligt med præcis månekalender."
-    />
-    <meta
-      name="keywords"
-      content="fuldmåne, er det fuldmåne, fuldmåne hvornår, hvornår fuldmåne, fuldmåne i dag, fuldmåne i nat, månefase, månekalender, fuldmåne danmark, næste fuldmåne"
+      content="Er det fuldmåne i dag, i aften eller i nat? Se med det samme om der er fuldmåne i Danmark, præcis hvornår næste fuldmåne er, og hvornår der sidst var fuldmåne."
     />
     <meta name="language" content="Danish" />
     <meta name="author" content="Fuldmåne Tracker" />
@@ -32,11 +22,11 @@
     <meta property="og:url" content="https://erdetfuldmaane.dk/" />
     <meta
       property="og:title"
-      content="Er det fuldmåne i dag? | Fuldmåne Danmark"
+      content="Er det fuldmåne i dag? Hvornår er næste fuldmåne?"
     />
     <meta
       property="og:description"
-      content="Tjek om det er fuldmåne i nat. Se aktuel månefase og hvornår næste fuldmåne er i Danmark."
+      content="Se med det samme om det er fuldmåne i nat, og præcis hvornår næste fuldmåne er i Danmark."
     />
     <meta
       property="og:image"
@@ -47,10 +37,13 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://erdetfuldmaane.dk/" />
-    <meta property="twitter:title" content="Er det fuldmåne i dag?" />
+    <meta
+      property="twitter:title"
+      content="Er det fuldmåne i dag? Hvornår er næste fuldmåne?"
+    />
     <meta
       property="twitter:description"
-      content="Tjek om det er fuldmåne i nat. Se aktuel månefase og hvornår næste fuldmåne er."
+      content="Se med det samme om det er fuldmåne i nat, og præcis hvornår næste fuldmåne er."
     />
     <meta
       property="twitter:image"
@@ -68,7 +61,7 @@
 
     <link rel="stylesheet" href="styles.css" />
 
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Structured Data (JSON-LD), kept in sync with the visible FAQ -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -79,23 +72,23 @@
             "name": "Er det fuldmåne i dag?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Denne side viser om det er fuldmåne i Danmark i dag. Månefasen opdateres automatisk baseret på astronomiske beregninger og viser den aktuelle månefase."
+              "text": "Svaret står øverst på siden. Vi siger ja, når fuldmånen indtræffer mellem kl. 12 i dag og kl. 12 i morgen, dansk tid. Så er det fuldmåne i aften og i nat."
             }
           },
           {
             "@type": "Question",
-            "name": "Hvornår er der fuldmåne?",
+            "name": "Hvor ofte er der fuldmåne?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Fuldmåne indtræffer cirka hver 29,5 dag. På denne side kan du se hvornår næste fuldmåne er, samt hvornår den sidste fuldmåne var."
+              "text": "Der er fuldmåne cirka hver 29,5 dag, altså 12 eller 13 gange om året. Fuldmånen er det øjeblik, hvor månen står lige modsat solen set fra Jorden, så hele den side, vi ser, er belyst."
             }
           },
           {
             "@type": "Question",
-            "name": "Hvad er månefaserne?",
+            "name": "Hvorfor ser månen fuld ud flere dage i træk?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Månefaserne er: Nymåne, Tiltagende månesigel, Første kvarter, Tiltagende måne, Fuldmåne, Aftagende måne, Sidste kvarter, og Aftagende månesigel."
+              "text": "Fuldmånen er et præcist øjeblik, men månen er omkring 99 % belyst et døgn før og efter. Derfor ser den fuld ud for det blotte øje i to-tre nætter, selvom kun én af dem er den egentlige fuldmånenat."
             }
           }
         ]
@@ -108,13 +101,8 @@
         "@type": "WebSite",
         "name": "Er det fuldmåne?",
         "url": "https://erdetfuldmaane.dk/",
-        "description": "Tjek om det er fuldmåne i Danmark. Se aktuel månefase, næste og sidste fuldmåne.",
-        "inLanguage": "da-DK",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://erdetfuldmaane.dk/?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
+        "description": "Se om det er fuldmåne i dag, og hvornår næste og sidste fuldmåne er i Danmark.",
+        "inLanguage": "da-DK"
       }
     </script>
   </head>
@@ -141,43 +129,48 @@
         </section>
       </article>
 
-      <!-- SEO Content (Hidden but crawlable) -->
-      <section class="seo-content" aria-hidden="true">
-        <h2>Fuldmåne i Danmark - Aktuel Månefase</h2>
+      <section class="info" aria-labelledby="calendarHeading">
+        <h2 id="calendarHeading">Hvornår er det fuldmåne? Næste fuldmåner</h2>
         <p>
-          Er det fuldmåne i dag? Find ud af om der er fuldmåne i nat i Danmark.
-          Vores månekalender viser den aktuelle månefase og fortæller dig
-          præcist hvornår næste fuldmåne er.
+          Her er de næste fuldmåner i Danmark. Tidspunkterne er i dansk tid og
+          beregnet astronomisk, så de passer på minuttet.
+        </p>
+        <ol class="full-moon-list" id="fullMoonList"></ol>
+      </section>
+
+      <section class="info" aria-labelledby="faqHeading">
+        <h2 id="faqHeading">Spørgsmål om fuldmåne</h2>
+
+        <h3>Er det fuldmåne i dag?</h3>
+        <p>
+          Svaret står øverst på siden. Vi siger ja, når fuldmånen indtræffer
+          mellem kl. 12 i dag og kl. 12 i morgen, dansk tid. Så er det fuldmåne
+          i aften og i nat.
         </p>
 
-        <h3>Hvornår er der fuldmåne?</h3>
-        <p>
-          Fuldmåne indtræffer cirka hver 29,5 dag, når månen er på den modsatte
-          side af jorden i forhold til solen. På denne side kan du altid se den
-          aktuelle månefase, hvornår sidste fuldmåne var, og hvornår næste
-          fuldmåne kommer.
+        <h3>Var det fuldmåne i nat?</h3>
+        <p id="lastNightAnswer">
+          Se listen over fuldmåner ovenfor for at se, om der var fuldmåne i
+          nat.
         </p>
 
-        <h3>Månefaser i Danmark</h3>
-        <p>
-          Månefaserne gentager sig i en fast cyklus: Nymåne, Tiltagende
-          månesigel, Første kvarter, Tiltagende måne, Fuldmåne, Aftagende måne,
-          Sidste kvarter, og Aftagende månesigel. Hver fase varer cirka 3-4
-          dage.
+        <h3>Hvornår var der sidst fuldmåne?</h3>
+        <p id="previousFullMoonAnswer">
+          Datoen for den seneste fuldmåne står under svaret øverst på siden.
         </p>
 
-        <h3>Månekalender og Fuldmåne Dato</h3>
+        <h3>Hvor ofte er der fuldmåne?</h3>
         <p>
-          Brug denne månekalender til at holde styr på månefaserne. Du kan se
-          både historiske og fremtidige fuldmåner, så du altid ved hvornår der
-          er fuldmåne i Danmark.
+          Der er fuldmåne cirka hver 29,5 dag, altså 12 eller 13 gange om året.
+          Fuldmånen er det øjeblik, hvor månen står lige modsat solen set fra
+          Jorden, så hele den side, vi ser, er belyst.
         </p>
 
-        <h3>Er det fuldmåne i nat?</h3>
+        <h3>Hvorfor ser månen fuld ud flere dage i træk?</h3>
         <p>
-          Tjek toppen af siden for at se om det er fuldmåne i nat. Vi beregner
-          månefasen baseret på astronomiske data og viser svaret øjeblikkeligt.
-          Siden opdateres automatisk hver dag.
+          Fuldmånen er et præcist øjeblik, men månen er omkring 99 % belyst
+          et døgn før og efter. Derfor ser den fuld ud for det blotte øje i
+          to-tre nætter, selvom kun én af dem er den egentlige fuldmånenat.
         </p>
       </section>
     </main>

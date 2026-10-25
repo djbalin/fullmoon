@@ -124,14 +124,61 @@ body::before {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* SEO Content - Hidden but crawlable */
-.seo-content {
-  position: absolute;
-  left: -10000px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+main {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Keep the answer filling the first screen, with the info below it */
+.container {
+  min-height: calc(100dvh - 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.info {
+  margin-top: 48px;
+  line-height: 1.6;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+.info h2 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.info h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 24px 0 6px;
+}
+
+.info p {
+  opacity: 0.8;
+}
+
+.full-moon-list {
+  list-style: none;
+  margin-top: 16px;
+}
+
+.full-moon-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.full-moon-list li:first-child {
+  color: #ffd700;
+}
+
+.full-moon-time {
+  white-space: nowrap;
+  opacity: 0.8;
 }
 
 /* Footer */

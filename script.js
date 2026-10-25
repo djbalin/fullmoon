@@ -98,9 +98,21 @@ function getFullMoon(n) {
 
 // The full moons from about two months before to one month after the date
 function getFullMoonsAround(date) {
-  const julianDay = date.getTime() / DAY_MS + 2440587.5;
-  const n = Math.floor((julianDay - 2451550.09766) / SYNODIC_MONTH);
+  const n = getFullMoonNumber(date);
   return [n - 2, n - 1, n, n + 1, n + 2].map(getFullMoon);
+}
+
+// The next `count` full moons after the date
+function getUpcomingFullMoons(date, count) {
+  const n = getFullMoonNumber(date) - 1;
+  return Array.from({ length: count + 2 }, (_, i) => getFullMoon(n + i))
+    .filter((fullMoon) => fullMoon > date)
+    .slice(0, count);
+}
+
+function getFullMoonNumber(date) {
+  const julianDay = date.getTime() / DAY_MS + 2440587.5;
+  return Math.floor((julianDay - 2451550.09766) / SYNODIC_MONTH);
 }
 
 // 0 and 1 are new moon, 0.5 is full moon
@@ -179,6 +191,54 @@ function formatFullMoonTime(date) {
     minute: "2-digit",
     timeZone: TIME_ZONE,
   });
+}
+
+function formatFullMoonDate(date) {
+  return date.toLocaleDateString("da-DK", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: TIME_ZONE,
+  });
+}
+
+function formatClock(date) {
+  return date.toLocaleTimeString("da-DK", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: TIME_ZONE,
+  });
+}
+
+function renderFullMoonCalendar(now) {
+  document.getElementById("fullMoonList").innerHTML = getUpcomingFullMoons(now, 12)
+    .map(
+      (fullMoon) => `
+        <li>
+          <time datetime="${fullMoon.toISOString()}">${formatFullMoonDate(fullMoon)}</time>
+          <span class="full-moon-time">kl. ${formatClock(fullMoon)}</span>
+        </li>
+      `,
+    )
+    .join("");
+}
+
+function renderFaqAnswers(now, fullMoons, nextFullMoon) {
+  // "I nat" in the past tense is the night that ended at noon today
+  const { year, month, day } = getCopenhagenParts(now);
+  const lastNight = getNight(new Date(getCopenhagenNoon(year, month, day) - 1));
+  const fullMoonLastNight = fullMoons.find(
+    (fullMoon) => fullMoon >= lastNight.start && fullMoon < lastNight.end,
+  );
+  const previousFullMoon = fullMoons.filter((fullMoon) => fullMoon < now).pop();
+
+  document.getElementById("lastNightAnswer").textContent = fullMoonLastNight
+    ? `Ja, det var fuldmåne i nat. Fuldmånen indtraf ${formatFullMoonTime(fullMoonLastNight)}.`
+    : `Nej, det var ikke fuldmåne i nat. Næste fuldmåne er ${formatFullMoonTime(nextFullMoon)}.`;
+
+  document.getElementById("previousFullMoonAnswer").textContent =
+    `Den seneste fuldmåne var ${formatFullMoonDate(previousFullMoon)} kl. ${formatClock(previousFullMoon)}.`;
 }
 
 function startCountdown(targetDate, reloadDate) {
@@ -277,6 +337,9 @@ function initMoonTracker() {
       "lastFullMoon",
     ).textContent = `Sidste fuldmåne: ${lastFullMoonString} (${daysSinceFullMoon} dage siden)`;
   }
+
+  renderFullMoonCalendar(now);
+  renderFaqAnswers(now, fullMoons, nextFullMoon);
 }
 
 // Initialize when DOM is ready
