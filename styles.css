@@ -110,15 +110,11 @@ body::after {
   text-align: center;
   max-width: 600px;
   width: 100%;
-  background: rgba(15, 15, 35, 0.8);
-  border-radius: 30px;
   @media (max-width: 500px) {
   }
   @media (min-width: 501px) {
     padding: 40px 40px 50px;
   }
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   z-index: 1;
 }
@@ -193,13 +189,6 @@ h1 {
   opacity: 0.7;
   font-weight: 300;
   letter-spacing: 1px;
-}
-
-.date {
-  font-size: 1rem;
-  opacity: 0.7;
-  margin-top: 30px;
-  font-style: italic;
 }
 
 .phase-info {

@@ -1,118 +1,203 @@
-// Calculate moon phase based on date
-function getMoonPhase(date) {
-  // Convert date to UTC
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
+const TIME_ZONE = "Europe/Copenhagen";
+const DAY_MS = 24 * 60 * 60 * 1000;
+const SYNODIC_MONTH = 29.530588861;
+// Difference between Terrestrial Time and UTC (ΔT), roughly 69 s in the 2020s
+const DELTA_T_MS = 69 * 1000;
 
-  // Calculate Julian Date
-  let jd =
-    367 * year -
-    Math.floor((7 * (year + Math.floor((month + 9) / 12))) / 4) +
-    Math.floor((275 * month) / 9) +
-    day +
-    1721013.5;
+const PHASE_EMOJIS = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"];
+const PHASE_NAMES = [
+  "Nymåne",
+  "Tiltagende månesigel",
+  "Første kvarter",
+  "Tiltagende måne",
+  "Fuldmåne",
+  "Aftagende måne",
+  "Sidste kvarter",
+  "Aftagende månesigel",
+];
 
-  // Days since known new moon (January 6, 2000)
-  const daysSinceNew = jd - 2451549.5;
+const sinDeg = (deg) => Math.sin((deg * Math.PI) / 180);
 
-  // Lunar month is approximately 29.53059 days
-  const lunarMonth = 29.53059;
+// Exact moment of full moon number n (counted from January 2000), using
+// Jean Meeus, "Astronomical Algorithms", chapter 49. Accurate to about a minute.
+function getFullMoon(n) {
+  const k = n + 0.5;
+  const T = k / 1236.85;
 
-  // Calculate phase (0-1, where 0 and 1 are new moon, 0.5 is full moon)
-  const phase = (daysSinceNew / lunarMonth) % 1;
+  const jde =
+    2451550.09766 +
+    SYNODIC_MONTH * k +
+    0.00015437 * T ** 2 -
+    0.00000015 * T ** 3 +
+    0.00000000073 * T ** 4;
 
-  return phase;
+  const E = 1 - 0.002516 * T - 0.0000074 * T ** 2;
+  const M = 2.5534 + 29.1053567 * k - 0.0000014 * T ** 2 - 0.00000011 * T ** 3;
+  const Mp =
+    201.5643 +
+    385.81693528 * k +
+    0.0107582 * T ** 2 +
+    0.00001238 * T ** 3 -
+    0.000000058 * T ** 4;
+  const F =
+    160.7108 +
+    390.67050284 * k -
+    0.0016118 * T ** 2 -
+    0.00000227 * T ** 3 +
+    0.000000011 * T ** 4;
+  const omega =
+    124.7746 - 1.56375588 * k + 0.0020672 * T ** 2 + 0.00000215 * T ** 3;
+
+  const correction =
+    -0.40614 * sinDeg(Mp) +
+    0.17302 * E * sinDeg(M) +
+    0.01614 * sinDeg(2 * Mp) +
+    0.01043 * sinDeg(2 * F) +
+    0.00734 * E * sinDeg(Mp - M) -
+    0.00514 * E * sinDeg(Mp + M) +
+    0.00209 * E * E * sinDeg(2 * M) -
+    0.00111 * sinDeg(Mp - 2 * F) -
+    0.00057 * sinDeg(Mp + 2 * F) +
+    0.00056 * E * sinDeg(2 * Mp + M) -
+    0.00042 * sinDeg(3 * Mp) +
+    0.00042 * E * sinDeg(M + 2 * F) +
+    0.00038 * E * sinDeg(M - 2 * F) -
+    0.00024 * E * sinDeg(2 * Mp - M) -
+    0.00017 * sinDeg(omega) -
+    0.00007 * sinDeg(Mp + 2 * M) +
+    0.00004 * sinDeg(2 * Mp - 2 * F) +
+    0.00004 * sinDeg(3 * M) +
+    0.00003 * sinDeg(Mp + M - 2 * F) +
+    0.00003 * sinDeg(2 * Mp + 2 * F) -
+    0.00003 * sinDeg(Mp + M + 2 * F) +
+    0.00003 * sinDeg(Mp - M + 2 * F) -
+    0.00002 * sinDeg(Mp - M - 2 * F) -
+    0.00002 * sinDeg(3 * Mp + M) +
+    0.00002 * sinDeg(4 * Mp);
+
+  // Perturbations by the planets
+  const planetary =
+    0.000325 * sinDeg(299.77 + 0.107408 * k - 0.009173 * T ** 2) +
+    0.000165 * sinDeg(251.88 + 0.016321 * k) +
+    0.000164 * sinDeg(251.83 + 26.651886 * k) +
+    0.000126 * sinDeg(349.42 + 36.412478 * k) +
+    0.00011 * sinDeg(84.66 + 18.206239 * k) +
+    0.000062 * sinDeg(141.74 + 53.303771 * k) +
+    0.00006 * sinDeg(207.14 + 2.453732 * k) +
+    0.000056 * sinDeg(154.84 + 7.30686 * k) +
+    0.000047 * sinDeg(34.52 + 27.261239 * k) +
+    0.000042 * sinDeg(207.19 + 0.121824 * k) +
+    0.00004 * sinDeg(291.34 + 1.844379 * k) +
+    0.000037 * sinDeg(161.72 + 24.198154 * k) +
+    0.000035 * sinDeg(239.56 + 25.513099 * k) +
+    0.000023 * sinDeg(331.55 + 3.592518 * k);
+
+  const julianDay = jde + correction + planetary;
+  return new Date((julianDay - 2440587.5) * DAY_MS - DELTA_T_MS);
 }
 
-function getMoonEmoji(phase) {
-  if (phase < 0.0625) return "🌑"; // New Moon
-  if (phase < 0.1875) return "🌒"; // Waxing Crescent
-  if (phase < 0.3125) return "🌓"; // First Quarter
-  if (phase < 0.4375) return "🌔"; // Waxing Gibbous
-  if (phase < 0.5625) return "🌕"; // Full Moon
-  if (phase < 0.6875) return "🌖"; // Waning Gibbous
-  if (phase < 0.8125) return "🌗"; // Last Quarter
-  if (phase < 0.9375) return "🌘"; // Waning Crescent
-  return "🌑"; // New Moon
+// The full moons from about two months before to one month after the date
+function getFullMoonsAround(date) {
+  const julianDay = date.getTime() / DAY_MS + 2440587.5;
+  const n = Math.floor((julianDay - 2451550.09766) / SYNODIC_MONTH);
+  return [n - 2, n - 1, n, n + 1, n + 2].map(getFullMoon);
 }
 
-function getPhaseName(phase) {
-  if (phase < 0.0625) return "Nymåne";
-  if (phase < 0.1875) return "Tiltagende månesigel";
-  if (phase < 0.3125) return "Første kvarter";
-  if (phase < 0.4375) return "Tiltagende måne";
-  if (phase < 0.5625) return "Fuldmåne";
-  if (phase < 0.6875) return "Aftagende måne";
-  if (phase < 0.8125) return "Sidste kvarter";
-  if (phase < 0.9375) return "Aftagende månesigel";
-  return "Nymåne";
+// 0 and 1 are new moon, 0.5 is full moon
+function getMoonPhase(date, fullMoons) {
+  const nextIndex = fullMoons.findIndex((fullMoon) => fullMoon > date);
+  const previous = fullMoons[nextIndex - 1];
+  const next = fullMoons[nextIndex];
+  return (0.5 + (date - previous) / (next - previous)) % 1;
 }
 
+function getPhaseIndex(phase, isFullMoon) {
+  if (isFullMoon) return 4;
+  const index = Math.floor(phase * 8 + 0.5) % 8;
+  // Only call it full moon on the night the full moon actually happens
+  if (index === 4) return phase < 0.5 ? 3 : 5;
+  return index;
+}
 
-function getNextFullMoonDate(currentDate, currentPhase) {
-  const lunarMonth = 29.53059;
-  let daysUntilFull;
+function getCopenhagenParts(date) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: TIME_ZONE,
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hourCycle: "h23",
+  }).formatToParts(date);
+  const value = (type) => Number(parts.find((part) => part.type === type).value);
+  return {
+    year: value("year"),
+    month: value("month"),
+    day: value("day"),
+    hour: value("hour"),
+    minute: value("minute"),
+    second: value("second"),
+  };
+}
 
-  if (currentPhase < 0.5) {
-    // Moon is waxing, full moon is ahead
-    daysUntilFull = (0.5 - currentPhase) * lunarMonth;
-  } else {
-    // Moon is waning, next full moon is in next cycle
-    daysUntilFull = (1.5 - currentPhase) * lunarMonth;
+// 12:00 Copenhagen time on the given calendar day (day may overflow the month)
+function getCopenhagenNoon(year, month, day) {
+  const noonUtc = Date.UTC(year, month - 1, day, 12);
+  const local = getCopenhagenParts(new Date(noonUtc));
+  const offset =
+    Date.UTC(local.year, local.month - 1, local.day, local.hour, local.minute, local.second) -
+    noonUtc;
+  return new Date(noonUtc - offset);
+}
+
+// "Tonight" runs from noon to noon, Copenhagen time
+function getNight(date) {
+  const { year, month, day } = getCopenhagenParts(date);
+  const todayNoon = getCopenhagenNoon(year, month, day);
+  if (date < todayNoon) {
+    return { start: getCopenhagenNoon(year, month, day - 1), end: todayNoon };
   }
-
-  const nextFullMoonDate = new Date(currentDate);
-  nextFullMoonDate.setTime(
-    nextFullMoonDate.getTime() + daysUntilFull * 24 * 60 * 60 * 1000,
-  );
-
-  return nextFullMoonDate;
+  return { start: todayNoon, end: getCopenhagenNoon(year, month, day + 1) };
 }
 
-function getLastFullMoon(currentDate, currentPhase) {
-  const lunarMonth = 29.53059;
-  let daysSinceFull;
-
-  if (currentPhase < 0.5) {
-    // Moon is waxing, last full moon was in previous cycle
-    daysSinceFull = (0.5 + currentPhase) * lunarMonth;
-  } else {
-    // Moon is waning, full moon was earlier this cycle
-    daysSinceFull = (currentPhase - 0.5) * lunarMonth;
-  }
-
-  const lastFullMoonDate = new Date(currentDate);
-  lastFullMoonDate.setDate(
-    lastFullMoonDate.getDate() - Math.round(daysSinceFull),
+function getCalendarDaysBetween(earlier, later) {
+  const a = getCopenhagenParts(earlier);
+  const b = getCopenhagenParts(later);
+  return Math.round(
+    (Date.UTC(b.year, b.month - 1, b.day) - Date.UTC(a.year, a.month - 1, a.day)) /
+      DAY_MS,
   );
-
-  return lastFullMoonDate;
 }
 
-function startCountdown(targetDate) {
+function formatFullMoonTime(date) {
+  return date.toLocaleString("da-DK", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: TIME_ZONE,
+  });
+}
+
+function startCountdown(targetDate, reloadDate) {
   function updateCountdown() {
     const now = new Date();
-    const denmarkTime = new Date(
-      now.toLocaleString("en-US", { timeZone: "Europe/Copenhagen" }),
-    );
 
-    const timeRemaining = targetDate - denmarkTime;
-
-    if (timeRemaining <= 0) {
-      // Reload page when countdown ends
+    // Reload once the night of the next full moon begins
+    if (now >= reloadDate) {
       location.reload();
       return;
     }
 
-    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-    );
+    const timeRemaining = targetDate - now;
+
+    const days = Math.floor(timeRemaining / DAY_MS);
+    const hours = Math.floor((timeRemaining % DAY_MS) / (1000 * 60 * 60));
     const minutes = Math.floor(
       (timeRemaining % (1000 * 60 * 60)) / (1000 * 60),
     );
-    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
     let countdownText = "";
 
@@ -139,63 +224,46 @@ function startCountdown(targetDate) {
 
 // Main execution
 function initMoonTracker() {
-  // Get current date in Denmark timezone
   const now = new Date();
-  const denmarkTime = new Date(
-    now.toLocaleString("en-US", { timeZone: "Europe/Copenhagen" }),
+  const fullMoons = getFullMoonsAround(now);
+  const night = getNight(now);
+
+  const fullMoonTonight = fullMoons.find(
+    (fullMoon) => fullMoon >= night.start && fullMoon < night.end,
   );
+  const nextFullMoon = fullMoons.find((fullMoon) => fullMoon > now);
+  const lastFullMoon = fullMoons.filter((fullMoon) => fullMoon < night.start).pop();
 
-  // Calculate moon phase
-  const phase = getMoonPhase(denmarkTime);
-  const moonEmoji = getMoonEmoji(phase);
-  const phaseName = getPhaseName(phase);
-
-  // Check if it's a full moon (within ±1.5 days of full moon = phase 0.45 to 0.55)
-  const isFullMoon = phase >= 0.45 && phase <= 0.55;
+  const isFullMoon = fullMoonTonight !== undefined;
+  const phaseIndex = getPhaseIndex(getMoonPhase(now, fullMoons), isFullMoon);
 
   // Update the page
-  document.getElementById("moonEmoji").textContent = moonEmoji;
+  document.getElementById("moonEmoji").textContent = PHASE_EMOJIS[phaseIndex];
+  document.getElementById("phaseInfo").textContent = PHASE_NAMES[phaseIndex];
 
   if (isFullMoon) {
     document.getElementById("answer").textContent = "JA! 🎉";
     document.getElementById("answer").className = "answer yes";
+    document.getElementById("nextFullMoon").textContent = `Fuldmåne: ${formatFullMoonTime(fullMoonTonight)}`;
     document.getElementById("details").innerHTML = "Det er fuldmåne i nat!";
+
+    // Reload when the night is over
+    setTimeout(() => location.reload(), night.end - now);
   } else {
     document.getElementById("answer").textContent = "NEJ";
     document.getElementById("answer").className = "answer no";
-
-    // Set up countdown timer
-    const nextFullMoonDate = getNextFullMoonDate(denmarkTime, phase);
-    console.log(nextFullMoonDate);
-    document.getElementById("nextFullMoon").textContent = `Næste fuldmåne: ${nextFullMoonDate.toLocaleDateString("da-DK", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Copenhagen",
-    })}`;
-    startCountdown(nextFullMoonDate);
+    document.getElementById("nextFullMoon").textContent = `Næste fuldmåne: ${formatFullMoonTime(nextFullMoon)}`;
+    startCountdown(nextFullMoon, getNight(nextFullMoon).start);
   }
 
-  document.getElementById("phaseInfo").textContent = phaseName;
-
-  // Calculate and display last full moon
-  const lastFullMoonDate = getLastFullMoon(denmarkTime, phase);
-  const daysSinceFullMoon = Math.round(
-    (denmarkTime - lastFullMoonDate) / (1000 * 60 * 60 * 24),
-  );
-
-  const lastFullMoonOptions = {
+  // Display last full moon
+  const daysSinceFullMoon = getCalendarDaysBetween(lastFullMoon, now);
+  const lastFullMoonString = lastFullMoon.toLocaleDateString("da-DK", {
     year: "numeric",
     month: "long",
     day: "numeric",
-    timeZone: "Europe/Copenhagen",
-  };
-  const lastFullMoonString = lastFullMoonDate.toLocaleDateString(
-    "da-DK",
-    lastFullMoonOptions,
-  );
+    timeZone: TIME_ZONE,
+  });
 
   if (daysSinceFullMoon === 0) {
     document.getElementById("lastFullMoon").textContent =
@@ -209,22 +277,6 @@ function initMoonTracker() {
       "lastFullMoon",
     ).textContent = `Sidste fuldmåne: ${lastFullMoonString} (${daysSinceFullMoon} dage siden)`;
   }
-
-  // Format date in Danish
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "Europe/Copenhagen",
-  };
-  const dateString = denmarkTime.toLocaleDateString("da-DK", options);
-  const dateElement = document.getElementById("date");
-  dateElement.textContent = dateString;
-
-  // Add ISO datetime attribute for SEO
-  const isoDate = denmarkTime.toISOString().split("T")[0];
-  dateElement.setAttribute("datetime", isoDate);
 }
 
 // Initialize when DOM is ready
